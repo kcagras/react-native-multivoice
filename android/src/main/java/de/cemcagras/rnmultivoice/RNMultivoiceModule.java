@@ -1,4 +1,3 @@
-
 package de.cemcagras.rnmultivoice;
 
 import android.widget.Toast;
@@ -8,12 +7,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
+import de.cemcagras.rnmultivoice.RNMultivoiceThread;
+
 public class RNMultivoiceModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
-
-    private static final String DURATION_SHORT_KEY = "SHORT";
-    private static final String DURATION_LONG_KEY = "LONG";
 
     public RNMultivoiceModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -27,6 +25,11 @@ public class RNMultivoiceModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show(String message, int duration) {
-        Toast.makeText(getReactApplicationContext(), message, duration).show();
+        int n = 8; // Number of threads
+        for (int i=0; i<8; i++)
+        {
+            RNMultivoiceThread thread = new RNMultivoiceThread(this.reactContext, i);
+            thread.start();
+        }
     }
 }
